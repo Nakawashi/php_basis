@@ -1,0 +1,36 @@
+services:
+
+  nginx:
+    build:
+      context: .
+      dockerfile: .
+    ports: 
+      - "8080:80"
+    networks:
+      - internal
+    volumes:
+      - ./data/:/var/www/html/
+      - ./logs/nginx:/var/log/nginx/
+
+  php:
+    image: php:fpm-alpine
+    networks:
+      - internal
+    volumes:
+      - .data/:/var/www/html/
+      - .logs/php.log:/var/log/fpm-php.www.log
+      - .php/dev/php.ini:/usr/local/etc/php/php.ini
+
+  mysql:
+    image: mysql:8.3
+    environment:
+      - MYSQL_ROOT_PASSWORD=m£o2ienXonEckalTei9j
+      - MYSQL_DATABASE=database_test
+      - MYSQL_USER=lguser
+      - MYSQL_PASSWORD=aPsf474sagQLMDsc
+    networks:
+      - internal
+
+networks:
+  internal:
+    driver: bridge
